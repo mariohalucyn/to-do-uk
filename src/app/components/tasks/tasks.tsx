@@ -1,8 +1,11 @@
 "use client";
 
 import styles from "@/app/components/tasks/tasks.module.scss";
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import Task from "./task/task";
+import plusIcon from "/public/plus-svgrepo-com.svg";
+import Image from "next/image";
+import Popup from "./popup/popup";
 
 export interface Task {
   id: number;
@@ -22,8 +25,9 @@ export default function Tasks() {
   const [tasks, setTasks] = useState<Task[]>([]);
   const [selectedTask, setSelectedTask] = useState<Task>(defaultTask);
   const [newTask, setNewTask] = useState<Task>(defaultTask);
-  const headingInputRef = useRef(null);
+  const headingInputRef = useRef<HTMLInputElement>(null);
   const contentInputRef = useRef<HTMLTextAreaElement>(null);
+  const [isPopupOpen, setIsPopupOpen] = useState(false);
 
   const handleInput = (
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -40,9 +44,9 @@ export default function Tasks() {
     if (task) {
       const index = tasks.indexOf(task);
 
-      const updatedStatus = [...tasks]
-      updatedStatus[index].isCompleted = (tasks[index].isCompleted = isCompleted);
-      setTasks(updatedStatus)
+      const updatedStatus = [...tasks];
+      updatedStatus[index].isCompleted = tasks[index].isCompleted = isCompleted;
+      setTasks(updatedStatus);
     }
   };
 
@@ -75,54 +79,42 @@ export default function Tasks() {
     <div className={styles.tasks}>
       <div className={styles.tasksWrapper}>
         <h1>To-do list</h1>
-        {tasks.map(({ id, heading, content }, i) => {
+        <div className={styles.addNewTask}>
+          <a onClick={() => setIsPopupOpen(true)}>
+            Add new task
+            <Image
+              src={plusIcon}
+              alt="add task plus icon"
+              width={24}
+              height={24}
+            />
+          </a>
+        </div>
+        {tasks.map(({ id, heading }, i) => {
           return (
             <Task
               key={i}
               selectTask={selectTask}
               selectedTask={selectedTask}
               handleComplete={handleComplete}
+              deleteTask={deleteTask}
               id={id}
               heading={heading}
             />
           );
         })}
       </div>
-      <div className={styles.taskCreation}>
-        <div className={styles.inputsWrapper}>
-          <h2>Task: </h2>
-          <input
-            type="text"
-            name="heading"
-            id=""
-            placeholder="Title"
-            onChange={handleInput}
-            ref={headingInputRef}
+      <div>
+        {isPopupOpen ? (
+          <Popup
+            handleInput={handleInput}
+            headingInputRef={headingInputRef}
+            contentInputRef={contentInputRef}
+            setIsPopupOpen={setIsPopupOpen}
+            addNewTask={addNewTask}
+            newTask={newTask}
           />
-          <textarea
-            name="content"
-            id=""
-            placeholder="Description"
-            onChange={handleInput}
-            ref={contentInputRef}
-            cols={30}
-            rows={10}
-          ></textarea>
-        </div>
-        <div className={styles.buttonsWrapper}>
-          <button
-            className={styles.outlinedButton}
-            onClick={() => addNewTask(newTask)}
-          >
-            Add New Task
-          </button>
-          <button
-            className={styles.filledButton}
-            onClick={() => deleteTask(selectedTask.id)}
-          >
-            Delete Task
-          </button>
-        </div>
+        ) : null}
       </div>
     </div>
   );

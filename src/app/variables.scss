@@ -1,8 +1,7 @@
-
-$red: #F02D3A;
-$black: #231F20;
-$green: #48BF84;
-$yellow: #FFD817;
+$red: #f02d3a;
+$black: #231f20;
+$green: #48bf84;
+$yellow: #ffd817;
 
 $white-50: #ffffff;
 $white-100: #efefef;
@@ -16,18 +15,19 @@ $white-800: #464646;
 $white-900: #3d3d3d;
 $white-950: #292929;
 
-.filledButton, .outlinedButton {
-    padding: 0.5rem 1.25rem;
-    border-radius: 0.5rem;
-    font-size: 0.85rem;
-    font-weight: 600;
+.filledButton,
+.outlinedButton {
+  padding: 0.5rem 1.25rem;
+  border-radius: 0.5rem;
+  font-size: 0.85rem;
+  font-weight: 600;
 }
 
 .filledButton {
-    background-color: $yellow;
-    border: 2px solid $yellow;
+  background-color: $yellow;
+  border: 2px solid $yellow;
 }
 
 .outlinedButton {
-    border: 2px solid $white-200;
+  border: 2px solid $white-200;
 }
