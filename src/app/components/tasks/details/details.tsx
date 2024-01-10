@@ -1,29 +1,45 @@
 import { motion } from "framer-motion";
 import styles from "./details.module.scss";
-import { Task } from "../tasks";
+import { Task, defaultTask } from "../tasks";
 import Image from "next/image";
 import plusIcon from "/public/plus-svgrepo-com.svg";
+import { useEffect, useState } from "react";
 
 export default function Details({
-  handleInput,
-  headingInputRef,
-  contentInputRef,
   id,
   deleteTask,
   setIsDetailsOpen,
   selectedTask,
+  saveChanges,
+  currentTask,
+  setCurrentTask,
+  detailsHeadingInputRef,
+  detailsContentInputRef,
 }: {
-  handleInput: (
-    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => void;
-  headingInputRef: any;
   id: number;
-  contentInputRef: any;
   newTask: Task;
   setIsDetailsOpen: (isDetailsOpen: boolean) => void;
   deleteTask: (id: number) => void;
   selectedTask: Task;
+  saveChanges: (newTask: Task, id: number) => void;
+  currentTask: Task;
+  setCurrentTask: (task: Task) => void;
+  detailsHeadingInputRef: any;
+  detailsContentInputRef: any;
 }) {
+  useEffect(() => {
+    setCurrentTask(selectedTask);
+  }, [selectedTask]);
+
+  const handleInput = (
+    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    const date = new Date();
+
+    const { value, name } = event.target;
+    setCurrentTask({ ...currentTask, [name]: value, id: date.getTime() });
+  };
+
   return (
     <div className={styles.details}>
       <div className={styles.inputsWrapper}>
@@ -47,33 +63,27 @@ export default function Details({
           name="heading"
           id=""
           placeholder="Title"
+          ref={detailsHeadingInputRef}
           onChange={handleInput}
-          ref={headingInputRef}
-          value={selectedTask.heading}
+          value={currentTask.heading}
         />
         <textarea
           name="content"
           id=""
           placeholder="Description"
           onChange={handleInput}
-          ref={contentInputRef}
-          value={selectedTask.content}
+          ref={detailsContentInputRef}
+          value={currentTask.content}
           cols={30}
           rows={7}
         ></textarea>
         <div className={styles.buttonsWrapper}>
           <motion.button
             whileTap={{ scale: 0.9 }}
-            className={styles.outlinedButton}
+            className={styles.filledButton}
+            onClick={() => saveChanges(currentTask, id)}
           >
             Save Changes
-          </motion.button>
-          <motion.button
-            whileTap={{ scale: 0.9 }}
-            className={styles.filledButton}
-            onClick={() => deleteTask(id)}
-          >
-            Remove Task
           </motion.button>
         </div>
       </div>

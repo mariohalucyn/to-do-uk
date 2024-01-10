@@ -16,7 +16,7 @@ export interface Task {
   isCompleted: boolean;
 }
 
-const defaultTask = {
+export const defaultTask = {
   id: 0,
   heading: "",
   content: "",
@@ -24,13 +24,16 @@ const defaultTask = {
 };
 
 export default function Tasks() {
+  const headingInputRef = useRef<HTMLInputElement>(null);
+  const contentInputRef = useRef<HTMLTextAreaElement>(null);
+  const detailsHeadingInputRef = useRef<HTMLInputElement>(null);
+  const detailsContentInputRef = useRef<HTMLTextAreaElement>(null);
   const [tasks, setTasks] = useState<Task[]>([]);
   const [selectedTask, setSelectedTask] = useState<Task>(defaultTask);
   const [newTask, setNewTask] = useState<Task>(defaultTask);
-  const headingInputRef = useRef<HTMLInputElement>(null);
-  const contentInputRef = useRef<HTMLTextAreaElement>(null);
   const [isNewTaskPopupOpen, setIsNewTaskPopupOpen] = useState(false);
   const [isDetailsOpen, setIsDetailsOpen] = useState(false);
+  const [currentTask, setCurrentTask] = useState<Task>(defaultTask);
 
   const handleInput = (
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -78,6 +81,18 @@ export default function Tasks() {
     }
   };
 
+  const saveChanges = (newTask: Task, id: number) => {
+    const task = tasks.find((task) => task.id === id);
+
+    if (task) {
+      const index = tasks.indexOf(task);
+
+      const updatedTask = [...tasks];
+      updatedTask[index] = newTask;
+      setTasks(updatedTask);
+    }
+  };
+
   return (
     <div className={styles.tasks}>
       <div className={styles.tasksWrapper}>
@@ -122,13 +137,15 @@ export default function Tasks() {
         {isDetailsOpen ? (
           <Details
             id={selectedTask.id}
-            handleInput={handleInput}
-            headingInputRef={headingInputRef}
-            contentInputRef={contentInputRef}
             newTask={newTask}
             deleteTask={deleteTask}
             setIsDetailsOpen={setIsDetailsOpen}
             selectedTask={selectedTask}
+            saveChanges={saveChanges}
+            currentTask={currentTask}
+            setCurrentTask={setCurrentTask}
+            detailsHeadingInputRef={detailsHeadingInputRef}
+            detailsContentInputRef={detailsContentInputRef}
           />
         ) : null}
       </div>
