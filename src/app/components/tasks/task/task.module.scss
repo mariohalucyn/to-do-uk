@@ -1,0 +1,31 @@
+@import '../../../variables.scss';
+
+.task {
+    .selected {
+        background: $white-100;
+        border-radius: 0.5rem;
+    }
+
+    ul {
+        list-style: none;
+        display: flex;
+        align-items: center;
+
+        gap: 0.75rem;
+        padding: 1rem;
+
+        li {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+        }
+
+        input[type="checkbox"] {
+            width: 1rem;
+            height: 1rem;
+            accent-color: green;
+            transition: 0.5s linear;
+        }
+    }   
+}

@@ -4,8 +4,8 @@ import Tasks from "./components/tasks/tasks";
 
 export default function Home() {
   return (
-    <div>
+    <main className={styles.main}>
       <Tasks />
-    </div>
+    </main>
   );
 }
