@@ -1,12 +1,13 @@
 "use client";
 
 import styles from "@/app/components/tasks/tasks.module.scss";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Task from "./task/task";
 import plusIcon from "/public/plus-svgrepo-com.svg";
 import Image from "next/image";
 import Popup from "./newTaskPopup/newTaskPopup";
 import { motion } from "framer-motion";
+import Details from "@/app/components/tasks/details/details";
 
 export interface Task {
   id: number;
@@ -28,7 +29,8 @@ export default function Tasks() {
   const [newTask, setNewTask] = useState<Task>(defaultTask);
   const headingInputRef = useRef<HTMLInputElement>(null);
   const contentInputRef = useRef<HTMLTextAreaElement>(null);
-  const [isPopupOpen, setIsPopupOpen] = useState(false);
+  const [isNewTaskPopupOpen, setIsNewTaskPopupOpen] = useState(false);
+  const [isDetailsOpen, setIsDetailsOpen] = useState(false);
 
   const handleInput = (
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -81,7 +83,7 @@ export default function Tasks() {
       <div className={styles.tasksWrapper}>
         <h1>To-do list</h1>
         <motion.div whileTap={{ scale: 0.95 }} className={styles.addNewTask}>
-          <a onClick={() => setIsPopupOpen(true)}>
+          <a onClick={() => setIsNewTaskPopupOpen(true)}>
             Add new task
             <Image
               src={plusIcon}
@@ -101,19 +103,32 @@ export default function Tasks() {
               deleteTask={deleteTask}
               id={id}
               heading={heading}
+              setIsDetailsOpen={setIsDetailsOpen}
             />
           );
         })}
       </div>
       <div>
-        {isPopupOpen ? (
+        {isNewTaskPopupOpen ? (
           <Popup
             handleInput={handleInput}
             headingInputRef={headingInputRef}
             contentInputRef={contentInputRef}
-            setIsPopupOpen={setIsPopupOpen}
+            setIsNewTaskPopupOpen={setIsNewTaskPopupOpen}
             addNewTask={addNewTask}
             newTask={newTask}
+          />
+        ) : null}
+        {isDetailsOpen ? (
+          <Details
+            id={selectedTask.id}
+            handleInput={handleInput}
+            headingInputRef={headingInputRef}
+            contentInputRef={contentInputRef}
+            newTask={newTask}
+            deleteTask={deleteTask}
+            setIsDetailsOpen={setIsDetailsOpen}
+            selectedTask={selectedTask}
           />
         ) : null}
       </div>

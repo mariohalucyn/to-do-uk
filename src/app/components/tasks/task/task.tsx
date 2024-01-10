@@ -12,6 +12,7 @@ export default function Task({
   id,
   heading,
   deleteTask,
+  setIsDetailsOpen,
 }: {
   selectTask: (id: number) => void;
   selectedTask: Task;
@@ -19,6 +20,7 @@ export default function Task({
   id: number;
   heading: string;
   deleteTask: (id: number) => void;
+  setIsDetailsOpen: (isDetailsOpen: boolean) => void;
 }) {
   const [isCompleted, setIsCompleted] = useState(false);
 
@@ -27,7 +29,7 @@ export default function Task({
   }, [isCompleted]);
 
   return (
-    <div className={styles.task}>
+    <div className={styles.task} onClick={() => setIsDetailsOpen(true)}>
       <div
         onClick={() => selectTask(id)}
         className={selectedTask.id === id ? styles.selected : ""}
