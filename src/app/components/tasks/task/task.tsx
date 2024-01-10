@@ -10,14 +10,12 @@ export default function Task({
   handleComplete,
   id,
   heading,
-  content,
 }: {
   selectTask: (id: number) => void;
   selectedTask: Task;
   handleComplete: (isCompleted: boolean, id: number) => void;
   id: number;
   heading: string;
-  content: string;
 }) {
   const [isCompleted, setIsCompleted] = useState(false);
 
@@ -33,7 +31,7 @@ export default function Task({
       >
         <ul>
             <input checked={isCompleted} onChange={() => setIsCompleted(!isCompleted)} type="checkbox" name="" id="" />
-          <li>
+          <li className={isCompleted ? styles.isCompleted : ''}>
             <p>{heading}</p>
             <Image
               src={arrowIcon}

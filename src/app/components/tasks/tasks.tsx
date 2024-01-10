@@ -1,7 +1,7 @@
 "use client";
 
 import styles from "@/app/components/tasks/tasks.module.scss";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Task from "./task/task";
 
 export interface Task {
@@ -9,6 +9,7 @@ export interface Task {
   heading: string;
   content: string;
   isCompleted: boolean;
+  updatedStatus?: void;
 }
 
 const defaultTask = {
@@ -38,9 +39,11 @@ export default function Tasks() {
     const task = tasks.find((task) => task.id === id);
 
     if (task) {
-      const index = tasks.indexOf(task)
-      const isCurrentlyCompleted = tasks[index].isCompleted
-      setTasks({...tasks, [tasks[index].isCompleted]: !isCompleted})
+      const index = tasks.indexOf(task);
+
+      const updatedStatus = [...tasks]
+      updatedStatus[index].isCompleted = (tasks[index].isCompleted = isCompleted);
+      setTasks(updatedStatus)
     }
   };
 
