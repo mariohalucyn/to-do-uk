@@ -9,7 +9,6 @@ export interface Task {
   heading: string;
   content: string;
   isCompleted: boolean;
-  updatedStatus?: void;
 }
 
 const defaultTask = {
@@ -85,7 +84,6 @@ export default function Tasks() {
               handleComplete={handleComplete}
               id={id}
               heading={heading}
-              content={content}
             />
           );
         })}
