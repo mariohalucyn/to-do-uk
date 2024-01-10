@@ -5,7 +5,8 @@ import { useRef, useState } from "react";
 import Task from "./task/task";
 import plusIcon from "/public/plus-svgrepo-com.svg";
 import Image from "next/image";
-import Popup from "./popup/popup";
+import Popup from "./newTaskPopup/newTaskPopup";
+import { motion } from "framer-motion";
 
 export interface Task {
   id: number;
@@ -79,7 +80,7 @@ export default function Tasks() {
     <div className={styles.tasks}>
       <div className={styles.tasksWrapper}>
         <h1>To-do list</h1>
-        <div className={styles.addNewTask}>
+        <motion.div whileTap={{ scale: 0.95 }} className={styles.addNewTask}>
           <a onClick={() => setIsPopupOpen(true)}>
             Add new task
             <Image
@@ -89,7 +90,7 @@ export default function Tasks() {
               height={24}
             />
           </a>
-        </div>
+        </motion.div>
         {tasks.map(({ id, heading }, i) => {
           return (
             <Task

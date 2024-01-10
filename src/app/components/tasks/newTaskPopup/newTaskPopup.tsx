@@ -1,7 +1,8 @@
-import styles from "@/app/components/tasks/popup/popup.module.scss";
+import styles from "@/app/components/tasks/newTaskPopup/newTaskPopup.module.scss";
 import { Task } from "../tasks";
 import plusIcon from "/public/plus-svgrepo-com.svg";
 import Image from "next/image";
+import { motion } from "framer-motion";
 
 export default function Popup({
   handleInput,
@@ -25,14 +26,18 @@ export default function Popup({
       <div className={styles.inputsWrapper}>
         <div className={styles.heading}>
           <h2>Add New Task: </h2>
-          <button onClick={() => setIsPopupOpen(false)}>
+          <motion.button
+            className={styles.closeButton}
+            whileTap={{ scale: 0.9 }}
+            onClick={() => setIsPopupOpen(false)}
+          >
             <Image
               src={plusIcon}
               alt="small simple arrow icon"
               width={24}
               height={24}
             />
-          </button>
+          </motion.button>
         </div>
         <input
           type="text"
@@ -53,12 +58,13 @@ export default function Popup({
         ></textarea>
       </div>
       <div className={styles.buttonsWrapper}>
-        <button
+        <motion.button
+          whileTap={{ scale: 0.9 }}
           className={styles.outlinedButton}
           onClick={() => addNewTask(newTask)}
         >
           Add New Task
-        </button>
+        </motion.button>
       </div>
     </div>
   );

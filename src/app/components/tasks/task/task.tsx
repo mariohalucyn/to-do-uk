@@ -3,6 +3,7 @@ import { Task } from "../tasks";
 import plusIcon from "/public/plus-svgrepo-com.svg";
 import Image from "next/image";
 import { useEffect, useState } from "react";
+import { motion } from "framer-motion";
 
 export default function Task({
   selectTask,
@@ -41,14 +42,18 @@ export default function Task({
           />
           <li className={isCompleted ? styles.isCompleted : ""}>
             <p>{heading}</p>
-            <button onClick={() => deleteTask(id)}>
+            <motion.button
+              className={styles.closeButton}
+              whileTap={{ scale: 0.9 }}
+              onClick={() => deleteTask(id)}
+            >
               <Image
                 src={plusIcon}
                 alt="small simple arrow icon"
                 width={24}
                 height={24}
               />
-            </button>
+            </motion.button>
           </li>
         </ul>
       </div>
