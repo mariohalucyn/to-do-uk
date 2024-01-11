@@ -104,13 +104,13 @@ export default function Details({
             <motion.button
               whileTap={{ scale: 0.9 }}
               className={styles.notCompletedButton}
-              onClick={() => setStatus(["not completed", "#fde25a"], id)}
+              onClick={() => setStatus(["not completed", "#ee505b"], id)}
             >
               not completed
             </motion.button>
           </div>
         </div>
-        <div className={styles.buttonsWrapper} style={{marginTop: '2rem'}}>
+        <div className={styles.buttonsWrapper} style={{ marginTop: "2rem" }}>
           <motion.button
             whileTap={{ scale: 0.9 }}
             className={styles.outlinedButton}
