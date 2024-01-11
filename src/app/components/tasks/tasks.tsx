@@ -13,14 +13,14 @@ export interface Task {
   id: number;
   heading: string;
   content: string;
-  isCompleted: boolean;
+  status: Array<string>;
 }
 
 export const defaultTask = {
   id: 0,
   heading: "",
   content: "",
-  isCompleted: false,
+  status: ["not completed", "#ee505b"],
 };
 
 export default function Tasks() {
@@ -42,18 +42,6 @@ export default function Tasks() {
 
     const { value, name } = event.target;
     setNewTask({ ...newTask, [name]: value, id: date.getTime() });
-  };
-
-  const handleComplete = (isCompleted: boolean, id: number) => {
-    const task = tasks.find((task) => task.id === id);
-
-    if (task) {
-      const index = tasks.indexOf(task);
-
-      const updatedStatus = [...tasks];
-      updatedStatus[index].isCompleted = tasks[index].isCompleted = isCompleted;
-      setTasks(updatedStatus);
-    }
   };
 
   const addNewTask = (newTask: Task) => {
@@ -93,12 +81,30 @@ export default function Tasks() {
     }
   };
 
+  const setStatus = (newStatus: Array<string>, id: number) => {
+    const task = tasks.find((task) => task.id === id);
+
+    if (task) {
+      const index = tasks.indexOf(task);
+
+      const updatedStatus = [...tasks];
+      updatedStatus[index].status = newStatus;
+
+      setTasks(updatedStatus);
+    }
+  };
+
   return (
     <div className={styles.tasks}>
       <div className={styles.tasksWrapper}>
         <h1>To-do list</h1>
         <motion.div whileTap={{ scale: 0.95 }} className={styles.addNewTask}>
-          <a onClick={() => setIsNewTaskPopupOpen(true)}>
+          <a
+            onClick={() => {
+              setIsNewTaskPopupOpen(true);
+              setIsDetailsOpen(false);
+            }}
+          >
             Add new task
             <Image
               src={plusIcon}
@@ -108,20 +114,23 @@ export default function Tasks() {
             />
           </a>
         </motion.div>
-        {tasks.map(({ id, heading }, i) => {
-          return (
-            <Task
-              key={i}
-              selectTask={selectTask}
-              selectedTask={selectedTask}
-              handleComplete={handleComplete}
-              deleteTask={deleteTask}
-              id={id}
-              heading={heading}
-              setIsDetailsOpen={setIsDetailsOpen}
-            />
-          );
-        })}
+        <div className={styles.tasksList}>
+          {tasks.map(({ id, heading, status }, i) => {
+            return (
+              <Task
+                key={i}
+                selectTask={selectTask}
+                selectedTask={selectedTask}
+                deleteTask={deleteTask}
+                id={id}
+                heading={heading}
+                setIsDetailsOpen={setIsDetailsOpen}
+                setIsNewTaskPopupOpen={setIsNewTaskPopupOpen}
+                status={status}
+              />
+            );
+          })}
+        </div>
       </div>
       <div>
         {isNewTaskPopupOpen ? (
@@ -146,6 +155,7 @@ export default function Tasks() {
             setCurrentTask={setCurrentTask}
             detailsHeadingInputRef={detailsHeadingInputRef}
             detailsContentInputRef={detailsContentInputRef}
+            setStatus={setStatus}
           />
         ) : null}
       </div>

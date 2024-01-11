@@ -7,7 +7,6 @@ import { useEffect, useState } from "react";
 
 export default function Details({
   id,
-  deleteTask,
   setIsDetailsOpen,
   selectedTask,
   saveChanges,
@@ -15,6 +14,7 @@ export default function Details({
   setCurrentTask,
   detailsHeadingInputRef,
   detailsContentInputRef,
+  setStatus,
 }: {
   id: number;
   newTask: Task;
@@ -26,6 +26,7 @@ export default function Details({
   setCurrentTask: (task: Task) => void;
   detailsHeadingInputRef: any;
   detailsContentInputRef: any;
+  setStatus: any;
 }) {
   useEffect(() => {
     setCurrentTask(selectedTask);
@@ -39,6 +40,11 @@ export default function Details({
     const { value, name } = event.target;
     setCurrentTask({ ...currentTask, [name]: value, id: date.getTime() });
   };
+
+  let date = new Date(id);
+  useEffect(() => {
+    date = new Date(id);
+  }, [id]);
 
   return (
     <div className={styles.details}>
@@ -58,6 +64,7 @@ export default function Details({
             />
           </motion.button>
         </div>
+        <p style={{ textAlign: "end" }}>{date.toDateString()}</p>
         <input
           type="text"
           name="heading"
@@ -77,10 +84,36 @@ export default function Details({
           cols={30}
           rows={7}
         ></textarea>
-        <div className={styles.buttonsWrapper}>
+        <div className={styles.statusButtonsWrapper}>
+          <h3>Status: </h3>
+          <div>
+            <motion.button
+              whileTap={{ scale: 0.9 }}
+              className={styles.completedButton}
+              onClick={() => setStatus(["completed", "#70d7a4"], id)}
+            >
+              completed
+            </motion.button>
+            <motion.button
+              whileTap={{ scale: 0.9 }}
+              className={styles.duringButton}
+              onClick={() => setStatus(["during", "#fde25a"], id)}
+            >
+              during
+            </motion.button>
+            <motion.button
+              whileTap={{ scale: 0.9 }}
+              className={styles.notCompletedButton}
+              onClick={() => setStatus(["not completed", "#fde25a"], id)}
+            >
+              not completed
+            </motion.button>
+          </div>
+        </div>
+        <div className={styles.buttonsWrapper} style={{marginTop: '1rem'}}>
           <motion.button
             whileTap={{ scale: 0.9 }}
-            className={styles.filledButton}
+            className={styles.outlinedButton}
             onClick={() => saveChanges(currentTask, id)}
           >
             Save Changes

@@ -8,54 +8,57 @@ import { motion } from "framer-motion";
 export default function Task({
   selectTask,
   selectedTask,
-  handleComplete,
   id,
   heading,
   deleteTask,
   setIsDetailsOpen,
+  setIsNewTaskPopupOpen,
+  status,
 }: {
   selectTask: (id: number) => void;
   selectedTask: Task;
-  handleComplete: (isCompleted: boolean, id: number) => void;
   id: number;
   heading: string;
   deleteTask: (id: number) => void;
   setIsDetailsOpen: (isDetailsOpen: boolean) => void;
+  setIsNewTaskPopupOpen: (isNewTaskPopupOpen: boolean) => void;
+  status: Array<any>;
 }) {
-  const [isCompleted, setIsCompleted] = useState(false);
-
-  useEffect(() => {
-    handleComplete(isCompleted, id);
-  }, [isCompleted]);
-
   return (
-    <div className={styles.task} onClick={() => setIsDetailsOpen(true)}>
+    <div
+      className={styles.task}
+      onClick={() => {
+        setIsDetailsOpen(true);
+        setIsNewTaskPopupOpen(false);
+      }}
+    >
       <div
         onClick={() => selectTask(id)}
         className={selectedTask.id === id ? styles.selected : ""}
       >
         <ul>
-          <input
-            checked={isCompleted}
-            onChange={() => setIsCompleted(!isCompleted)}
-            type="checkbox"
-            name=""
-            id=""
-          />
-          <li className={isCompleted ? styles.isCompleted : ""}>
+          <li>
             <p>{heading}</p>
-            <motion.button
-              className={styles.closeButton}
-              whileTap={{ scale: 0.9 }}
-              onClick={() => deleteTask(id)}
-            >
-              <Image
-                src={plusIcon}
-                alt="small simple arrow icon"
-                width={24}
-                height={24}
-              />
-            </motion.button>
+            <div className={styles.statusAndRemoveWrapper}>
+              <div
+                className={styles.status}
+                style={{ background: `${status[1]}` }}
+              >
+                {status[0]}
+              </div>
+              <motion.button
+                className={styles.closeButton}
+                whileTap={{ scale: 0.9 }}
+                onClick={() => deleteTask(id)}
+              >
+                <Image
+                  src={plusIcon}
+                  alt="small simple arrow icon"
+                  width={24}
+                  height={24}
+                />
+              </motion.button>
+            </div>
           </li>
         </ul>
       </div>
