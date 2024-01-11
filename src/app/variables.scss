@@ -20,9 +20,10 @@ $white-950: #292929;
 
 .filledButton,
 .outlinedButton {
+  text-decoration: none;
   padding: 0.5rem 1.25rem;
   border-radius: 0.5rem;
-  font-size: 0.85rem;
+  font-size: 0.80rem;
   font-weight: 600;
 }
 

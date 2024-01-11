@@ -110,7 +110,7 @@ export default function Details({
             </motion.button>
           </div>
         </div>
-        <div className={styles.buttonsWrapper} style={{marginTop: '1rem'}}>
+        <div className={styles.buttonsWrapper} style={{marginTop: '2rem'}}>
           <motion.button
             whileTap={{ scale: 0.9 }}
             className={styles.outlinedButton}
