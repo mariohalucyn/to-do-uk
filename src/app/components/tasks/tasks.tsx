@@ -1,13 +1,13 @@
 "use client";
 
+import Details from "@/app/components/tasks/details/details";
 import styles from "@/app/components/tasks/tasks.module.scss";
-import { useEffect, useRef, useState } from "react";
+import { motion } from "framer-motion";
+import Image from "next/image";
+import { useRef, useState } from "react";
+import Popup from "./newTaskPopup/newTaskPopup";
 import Task from "./task/task";
 import plusIcon from "/public/plus-svgrepo-com.svg";
-import Image from "next/image";
-import Popup from "./newTaskPopup/newTaskPopup";
-import { motion } from "framer-motion";
-import Details from "@/app/components/tasks/details/details";
 
 export interface Task {
   id: number;
@@ -26,14 +26,14 @@ export const defaultTask = {
 export default function Tasks() {
   const headingInputRef = useRef<HTMLInputElement>(null);
   const contentInputRef = useRef<HTMLTextAreaElement>(null);
-  const detailsHeadingInputRef = useRef<HTMLInputElement>(null);
-  const detailsContentInputRef = useRef<HTMLTextAreaElement>(null);
+
   const [tasks, setTasks] = useState<Task[]>([]);
-  const [selectedTask, setSelectedTask] = useState<Task>(defaultTask);
   const [newTask, setNewTask] = useState<Task>(defaultTask);
+  const [selectedTask, setSelectedTask] = useState<Task>(defaultTask);
+  const [currentTask, setCurrentTask] = useState<Task>(defaultTask);
+
   const [isNewTaskPopupOpen, setIsNewTaskPopupOpen] = useState(false);
   const [isDetailsOpen, setIsDetailsOpen] = useState(false);
-  const [currentTask, setCurrentTask] = useState<Task>(defaultTask);
 
   const handleInput = (
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -49,23 +49,6 @@ export default function Tasks() {
       setTasks([...tasks, newTask]);
       clearField([headingInputRef, contentInputRef]);
       setNewTask(defaultTask);
-    }
-  };
-
-  const clearField = (targets: Array<any>) => {
-    targets.forEach((target) => {
-      target.current.value = "";
-    });
-  };
-
-  const deleteTask = (id: number) => {
-    setTasks(tasks.filter((task) => task.id !== id));
-  };
-
-  const selectTask = (id: number) => {
-    const selected = tasks.find((task) => task.id === id);
-    if (selected) {
-      setSelectedTask(selected);
     }
   };
 
@@ -91,6 +74,23 @@ export default function Tasks() {
       updatedStatus[index].status = newStatus;
 
       setTasks(updatedStatus);
+    }
+  };
+
+  const clearField = (targets: Array<any>) => {
+    targets.forEach((target) => {
+      target.current.value = "";
+    });
+  };
+
+  const deleteTask = (id: number) => {
+    setTasks(tasks.filter((task) => task.id !== id));
+  };
+
+  const selectTask = (id: number) => {
+    const selected = tasks.find((task) => task.id === id);
+    if (selected) {
+      setSelectedTask(selected);
     }
   };
 
@@ -153,8 +153,6 @@ export default function Tasks() {
             saveChanges={saveChanges}
             currentTask={currentTask}
             setCurrentTask={setCurrentTask}
-            detailsHeadingInputRef={detailsHeadingInputRef}
-            detailsContentInputRef={detailsContentInputRef}
             setStatus={setStatus}
           />
         ) : null}

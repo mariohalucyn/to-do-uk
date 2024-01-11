@@ -1,9 +1,9 @@
 import { motion } from "framer-motion";
 import styles from "./details.module.scss";
-import { Task, defaultTask } from "../tasks";
+import { Task } from "../tasks";
 import Image from "next/image";
 import plusIcon from "/public/plus-svgrepo-com.svg";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 
 export default function Details({
   id,
@@ -12,8 +12,6 @@ export default function Details({
   saveChanges,
   currentTask,
   setCurrentTask,
-  detailsHeadingInputRef,
-  detailsContentInputRef,
   setStatus,
 }: {
   id: number;
@@ -24,8 +22,6 @@ export default function Details({
   saveChanges: (newTask: Task, id: number) => void;
   currentTask: Task;
   setCurrentTask: (task: Task) => void;
-  detailsHeadingInputRef: any;
-  detailsContentInputRef: any;
   setStatus: any;
 }) {
   useEffect(() => {
@@ -70,7 +66,6 @@ export default function Details({
           name="heading"
           id=""
           placeholder="Title"
-          ref={detailsHeadingInputRef}
           onChange={handleInput}
           value={currentTask.heading}
         />
@@ -79,7 +74,6 @@ export default function Details({
           id=""
           placeholder="Description"
           onChange={handleInput}
-          ref={detailsContentInputRef}
           value={currentTask.content}
           cols={30}
           rows={7}

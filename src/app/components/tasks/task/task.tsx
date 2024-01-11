@@ -2,7 +2,6 @@ import styles from "@/app/components/tasks/task/task.module.scss";
 import { Task } from "../tasks";
 import plusIcon from "/public/plus-svgrepo-com.svg";
 import Image from "next/image";
-import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 
 export default function Task({
